@@ -35,26 +35,56 @@ void fill_alphabet(char *alphabet) {
   alphabet[22] = 'z';
 }
 
-int check_letter(int *draw, int index) {
+void fill_category(char **category) {
+    category[0] = "profissoes";
+    category[1] = "nomes de pessoas";
+    category[2] = "nomes de cidade";
+    category[3] = "nomes de animais";
+    category[4] = "nomes de comida";
+}
+
+int check_letter(int *letter_draw, int index) {
     int checked = 0;
-    if (index == draw[index]) {
+    if (index == letter_draw[index]) {
         return 1;
     } else {
-        draw[index] = index;
+        letter_draw[index] = index;
         return checked;
     }
 }
 
-char get_letter(char *alphabet, int *draw) {
+char get_letter(char *alphabet, int *letter_draw) {
     int index;
 
     index = rand()%23;
 
-    while(check_letter(draw, index)) {
+    while(check_letter(letter_draw, index)) {
         index = rand()%23;
     }
 
     return alphabet[index];
+}
+
+int check_category(int *category_draw, int index) {
+    int checked = 0;
+    if (index == category_draw[index]) {
+        return 1;
+    } else {
+        category_draw[index] = index;
+        return checked;
+    }
+}
+
+char* get_category(char **category, int *category_draw) {
+    int index;
+
+    index = rand()%5;
+
+    while(check_category(category_draw, index)) {
+        index = rand()%5;
+    }
+
+    return category[index];
 }
 
 Player* players(int n) {
@@ -77,12 +107,16 @@ void players_name(Player *player, int n) {
 
 int main () {
     char alphabet[23];
-    int draw[23];
+    int letter_draw[23];
     char letter;
+    char *category[5];
+    int category_draw[5];
+    char *category_selected;
     int n;
     Player *player;
 
-    memset(draw, -1, sizeof(draw));
+    memset(letter_draw, -1, sizeof(letter_draw));
+    memset(category_draw, -1, sizeof(category_draw));
 
     srand(time(NULL));
 
@@ -100,8 +134,19 @@ int main () {
     */
 
     fill_alphabet(alphabet);
+    fill_category(category);
 
-    letter = get_letter(alphabet, draw);
+    letter = get_letter(alphabet, letter_draw);
+
+    printf("------------------------------------------------------\n");
+    printf("letra sorteada: %c\n", letter);
+    printf("------------------------------------------------------\n");
+
+    category_selected = get_category(category, category_draw);
+
+    printf("------------------------------------------------------\n");
+    printf("categoria sorteada: %s\n", category_selected);
+    printf("------------------------------------------------------\n");
 
     printf("\ntudo certo ate aqui!");    
 
