@@ -43,6 +43,18 @@ void fill_category(char **category) {
     category[4] = "nomes de comida";
 }
 
+int check_qtd_players(int n) {
+    while (n < 2 || n > 10) {
+        printf("---------------------------------------\n");
+        printf("Erro: Quantidade invalida\n");
+        printf("Entre com um valor entre 2 e 10\n");
+        printf("---------------------------------------\n");
+        printf("entre a quantidade de jogadores: ");
+        scanf("%d", &n);
+    }
+    return n;
+}
+
 int check_letter(int *letter_draw, int index) {
     int checked = 0;
     if (index == letter_draw[index]) {
@@ -112,6 +124,7 @@ int main () {
     char *category[5];
     int category_draw[5];
     char *category_selected;
+    char convert[256];
     int n;
     Player *player;
 
@@ -121,7 +134,10 @@ int main () {
     srand(time(NULL));
 
     printf("entre a quantidade de jogadores: ");
-    scanf("%d", &n);
+    scanf("%s", &convert);
+    n = atoi(convert);
+
+    n = check_qtd_players(n);
     
     player = players(n);
 
@@ -138,17 +154,17 @@ int main () {
 
     letter = get_letter(alphabet, letter_draw);
 
-    printf("------------------------------------------------------\n");
+    printf("---------------------------------------\n");
     printf("letra sorteada: %c\n", letter);
-    printf("------------------------------------------------------\n");
+    printf("---------------------------------------\n");
 
     category_selected = get_category(category, category_draw);
 
-    printf("------------------------------------------------------\n");
+    printf("---------------------------------------\n");
     printf("categoria sorteada: %s\n", category_selected);
-    printf("------------------------------------------------------\n");
+    printf("---------------------------------------\n");
 
-    printf("\ntudo certo ate aqui!");    
+    printf("\ntudo certo ate aqui!\n");    
 
     /*char v[14];
     memset(v, 0, sizeof(v));
