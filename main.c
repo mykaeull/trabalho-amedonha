@@ -15,7 +15,7 @@ struct pontoParcial {
 struct player {
   char nome[13];
   int pontoFinal;
-  PontoParcial pontoParcial[3];
+  PontoParcial pontoParcial[4];
 };
 
 void fill_alphabet(char *alphabet) {
@@ -121,7 +121,7 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
     printf("------------------------------------------------------\n");
     
     for(int i = 0; i < players; i++){
-        for(int j = 0; j < 4; j++){
+        for(int j = 0; j <= 4; j++){
             if(player[i].pontoParcial[j].modalidade == categoryType){
                 printf("Player %s: %s\n",player[i].nome, player[i].pontoParcial[j].resposta);
             }
@@ -136,7 +136,7 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
         printf("------------------------------------------------------\n");
         printf("Player %s - \n", player[i].nome);
         printf("------------------------------------------------------\n");
-        for(int j = 0; j < 4; j++){
+        for(int j = 0; j <= 4; j++){
             // mostrara os resultados parciais
             if(player[i].pontoParcial[j].ponto != 0){
                 printf("Type:  %s - \n", player[i].pontoParcial[j].modalidade);
@@ -147,9 +147,7 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
         if(countMatchs == 3){
             printf("Final Score:  %i - \n", player[i].pontoFinal);
         }
-
     }
-
 }
 
 
@@ -202,6 +200,7 @@ int main () {
         // Loop para os jogadores
             // escolher um jogador randomicamente
             // pegar as respostas por jogador
+
             // ele tem N segundos para responder
             // computar a resposta
 
@@ -209,7 +208,7 @@ int main () {
         showPlayersScore(player, n, countMatchs, category_selected);
         countMatchs++;
     }while(countMatchs < 3);
-        showPlayersScore(player, n, countMatchs, category_selected);
+    showPlayersScore(player, n, countMatchs, category_selected);
 
 
     printf("\ntudo certo ate aqui!");    
