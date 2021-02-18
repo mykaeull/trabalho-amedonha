@@ -4,9 +4,18 @@
 #include <string.h>
 
 typedef struct player Player;
+typedef struct pontoParcial PontoParcial;
+
+struct pontoParcial {
+    char modalidade[20];
+    int ponto;
+    char resposta[30];
+};
 
 struct player {
   char nome[13];
+  int pontoFinal;
+  PontoParcial pontoParcial[3];
 };
 
 void fill_alphabet(char *alphabet) {
@@ -113,9 +122,48 @@ void players_name(Player *player, int n) {
             memset(player[i].nome, 0, sizeof(player[i].nome));
             printf("nome jogador %d: ", i+1);
             scanf("%s", player[i].nome);
+
         }
     }
 }
+
+void showPlayersScore(Player *player, int players, int countMatchs, char *categoryType){
+    printf("------------------------------------------------------\n");
+    printf("Jogadas Realizadas\n");
+    printf("------------------------------------------------------\n");
+    
+    for(int i = 0; i < players; i++){
+        for(int j = 0; j < 4; j++){
+            if(player[i].pontoParcial[j].modalidade == categoryType){
+                printf("Player %s: %s\n",player[i].nome, player[i].pontoParcial[j].resposta);
+            }
+        }
+    }
+
+    printf("------------------------------------------------------\n");
+    printf("Let's show your scores!!!\n");
+    printf("------------------------------------------------------\n");
+
+    for(int i  = 0; i < players; i++){
+        printf("------------------------------------------------------\n");
+        printf("Player %s - \n", player[i].nome);
+        printf("------------------------------------------------------\n");
+        for(int j = 0; j < 4; j++){
+            // mostrara os resultados parciais
+            if(player[i].pontoParcial[j].ponto != 0){
+                printf("Type:  %s - \n", player[i].pontoParcial[j].modalidade);
+                printf("Score:  %i - \n", player[i].pontoParcial[j].ponto);
+            }
+        }
+        // mostrara os resultados finais
+        if(countMatchs == 3){
+            printf("Final Score:  %i - \n", player[i].pontoFinal);
+        }
+
+    }
+
+}
+
 
 int main () {
     char alphabet[23];
@@ -126,6 +174,7 @@ int main () {
     char *category_selected;
     char convert[256];
     int n;
+    int countMatchs = 0;
     Player *player;
 
     memset(letter_draw, -1, sizeof(letter_draw));
@@ -152,17 +201,34 @@ int main () {
     fill_alphabet(alphabet);
     fill_category(category);
 
-    letter = get_letter(alphabet, letter_draw);
+    do{
+        letter = get_letter(alphabet, letter_draw);
 
-    printf("---------------------------------------\n");
-    printf("letra sorteada: %c\n", letter);
-    printf("---------------------------------------\n");
 
-    category_selected = get_category(category, category_draw);
+        printf("------------------------------------------------------\n");
+        printf("letra sorteada: %c\n", letter);
+        printf("------------------------------------------------------\n");
 
-    printf("---------------------------------------\n");
-    printf("categoria sorteada: %s\n", category_selected);
-    printf("---------------------------------------\n");
+        category_selected = get_category(category, category_draw);
+
+        printf("------------------------------------------------------\n");
+        printf("categoria sorteada: %s\n", category_selected);
+        printf("------------------------------------------------------\n");
+
+
+        // Loop para os jogadores
+            // escolher um jogador randomicamente
+            // pegar as respostas por jogador
+            // ele tem N segundos para responder
+            // computar a resposta
+
+        // Mostrar Respostas Parciais
+        showPlayersScore(player, n, countMatchs, category_selected);
+        countMatchs++;
+    }while(countMatchs < 3);
+        showPlayersScore(player, n, countMatchs, category_selected);
+
+
 
     printf("\ntudo certo ate aqui!\n");    
 
