@@ -53,13 +53,15 @@ void fill_category(char **category) {
 }
 
 int check_qtd_players(int n) {
+    char convert[256];
     while (n < 2 || n > 10) {
-        printf("---------------------------------------\n");
+        printf("------------------------------------------------------\n");
         printf("Erro: Quantidade invalida\n");
         printf("Entre com um valor entre 2 e 10\n");
-        printf("---------------------------------------\n");
+        printf("------------------------------------------------------\n");
         printf("entre a quantidade de jogadores: ");
-        scanf("%d", &n);
+        scanf("%s", convert);
+        n = atoi(convert);
     }
     return n;
 }
