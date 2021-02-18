@@ -13,7 +13,7 @@ struct pontoParcial {
 };
 
 struct player {
-  char nome[13];
+  char name[13];
   int pontoFinal;
   PontoParcial pontoParcial[3];
 };
@@ -117,13 +117,13 @@ Player* players(int n) {
 
 void players_name(Player *player, int n) {
     for (int i = 0; i < n; i++) {
-        memset(player[i].nome, 0, sizeof(player[i].nome));
+        memset(player[i].name, 0, sizeof(player[i].name));
         printf("nome jogador %d: ", i+1);
-        scanf("%s", player[i].nome);
-        while (player[i].nome[12]) {
-            memset(player[i].nome, 0, sizeof(player[i].nome));
+        scanf("%s", player[i].name);
+        while (player[i].name[12]) {
+            memset(player[i].name, 0, sizeof(player[i].name));
             printf("nome jogador %d: ", i+1);
-            scanf("%s", player[i].nome);
+            scanf("%s", player[i].name);
 
         }
     }
@@ -137,35 +137,34 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
     for(int i = 0; i < players; i++){
         for(int j = 0; j < 4; j++){
             if(player[i].pontoParcial[j].modalidade == categoryType){
-                printf("Player %s: %s\n",player[i].nome, player[i].pontoParcial[j].resposta);
+                printf("Player %s: %s\n",player[i].name, player[i].pontoParcial[j].resposta);
             }
         }
     }
 
     printf("------------------------------------------------------\n");
-    printf("Let's show your scores!!!\n");
+    printf("TABELA DE SCORES DA RODADA\n");
     printf("------------------------------------------------------\n");
 
     for(int i  = 0; i < players; i++){
         printf("------------------------------------------------------\n");
-        printf("Player %s - \n", player[i].nome);
+        printf("Player %s - \n", player[i].name);
         printf("------------------------------------------------------\n");
         for(int j = 0; j < 4; j++){
             // mostrara os resultados parciais
             if(player[i].pontoParcial[j].ponto != 0){
-                printf("Type:  %s - \n", player[i].pontoParcial[j].modalidade);
-                printf("Score:  %i - \n", player[i].pontoParcial[j].ponto);
+                printf("Type:  %s \n", player[i].pontoParcial[j].modalidade);
+                printf("Score:  %d \n", player[i].pontoParcial[j].ponto);
             }
         }
         // mostrara os resultados finais
         if(countMatchs == 3){
-            printf("Final Score:  %i - \n", player[i].pontoFinal);
+            printf("Final Score:  %d \n", player[i].pontoFinal);
         }
 
     }
 
 }
-
 
 int main () {
     char alphabet[23];
@@ -176,6 +175,7 @@ int main () {
     char *category_selected;
     char convert[256];
     int n;
+    int random1, random2, random3;
     int countMatchs = 0;
     Player *player;
 
@@ -205,7 +205,6 @@ int main () {
 
     do{
         letter = get_letter(alphabet, letter_draw);
-
 
         printf("------------------------------------------------------\n");
         printf("letra sorteada: %c\n", letter);
