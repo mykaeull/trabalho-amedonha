@@ -13,7 +13,7 @@ struct pontoParcial {
 };
 
 struct player {
-  char name[13];
+  char name[256];
   int pontoFinal;
   PontoParcial pontoParcial[3];
 };
@@ -60,7 +60,8 @@ int check_qtd_players(int n) {
         printf("Entre com um valor entre 2 e 10\n");
         printf("------------------------------------------------------\n");
         printf("entre a quantidade de jogadores: ");
-        scanf("%s", convert);
+        fgets(convert, 256, stdin);
+        //scanf("%s", convert);
         n = atoi(convert);
     }
     return n;
@@ -110,15 +111,18 @@ void players_name(Player *player, int n) {
     for (int i = 0; i < n; i++) {
         memset(player[i].name, 0, sizeof(player[i].name));
         printf("nome jogador %d: ", i+1);
-        scanf("%s", player[i].name);
-        while (player[i].name[12]) {
+        fgets(player[i].name, 256, stdin);
+        player[i].name[strlen(player[i].name) - 1] = '\0'; // tira o \n do fgets
+        while (player[i].name[13]) {
             memset(player[i].name, 0, sizeof(player[i].name));
             printf("nome jogador %d: ", i+1);
-            scanf("%s", player[i].name);
+            fgets(player[i].name, 256, stdin);
+            player[i].name[strlen(player[i].name) - 1] = '\0';
         }
     }
 }
 
+/*
 void showPlayersScore(Player *player, int players, int countMatchs, char *categoryType){
     printf("------------------------------------------------------\n");
     printf("Jogadas Realizadas\n");
@@ -133,28 +137,29 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
     }
 
     printf("------------------------------------------------------\n");
-    printf("TABELA DE ESCORES DA RODADA\n");
+    printf("TABELA DE ESCORES DA RODADA %d\n", countMatchs+1);
     printf("------------------------------------------------------\n");
 
     for(int i  = 0; i < players; i++){
         printf("------------------------------------------------------\n");
-        printf("Player %s - \n", player[i].name);
+        printf("Player %s", player[i].name);
         printf("------------------------------------------------------\n");
         for(int j = 0; j < 4; j++){
             // mostrara os resultados parciais
-            if(player[i].pontoParcial[j].ponto != 0){
+            if(player[i].pontoParcial[j].ponto == 0){
                 printf("Type:  %s \n", player[i].pontoParcial[j].modalidade);
                 printf("Score:  %d \n", player[i].pontoParcial[j].ponto);
             }
         }
         // mostrara os resultados finais
-        if(countMatchs == 3){
+        if(countMatchs == 3){ 
             printf("Final Score:  %d \n", player[i].pontoFinal);
         }
 
     }
 
 }
+*/
 
 void show_order(Player *player, int *vet2, int n) {
     for (int i = 0; i < n; i++) {
@@ -174,12 +179,12 @@ int main () {
     int category_draw[5];
     char *category_selected;
     char convert[256];
-    int n;
+    int n, i, j;
     int *p = &n;
     int vet1[*p];
     int vet2[*p];
     int countMatchs = 0;
-    char teste;
+    char teste[256];
     Player *player;
 
     memset(letter_draw, -1, sizeof(letter_draw));
@@ -188,7 +193,8 @@ int main () {
     srand(time(NULL));
 
     printf("entre a quantidade de jogadores: ");
-    scanf("%s", &convert);
+    fgets(convert, 256, stdin);
+    //scanf("%s", &convert);
     n = atoi(convert);
 
     n = check_qtd_players(n);
@@ -206,6 +212,41 @@ int main () {
     fill_alphabet(alphabet);
     fill_category(category);
 
+    system("cls");
+
+    for (i = 0; i < 2; i++) {
+
+        letter = alphabet[get_index(letter_draw, 23)];
+
+        printf("------------------------------------------------------\n");
+        printf("letra sorteada: %c\n", letter);
+        printf("------------------------------------------------------\n");
+
+        category_selected = category[get_index(category_draw, 5)];
+
+        printf("------------------------------------------------------\n");
+        printf("categoria sorteada: %s\n", category_selected);
+        printf("------------------------------------------------------\n");
+
+        memset(vet1, -1, sizeof(vet1));
+        random_order(vet1, vet2, n); // ordem aleatoria ta no vet2
+
+        printf("------------------------------------------------------\n");
+        printf("A ordem desta rodada sera: \n");
+        show_order(player, vet2, n);
+        printf("------------------------------------------------------\n");
+
+        printf("\n%d\n", n);
+
+        printf("Aperte enter");
+        getchar();
+        clear_window();
+
+        
+
+    }
+
+    /*
     do{
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -227,6 +268,10 @@ int main () {
         show_order(player, vet2, n);
         printf("------------------------------------------------------\n");
 
+        //scanf("%d", &teste);
+
+        //system("cls");
+
         //printf("Aperte enter\n");
         
         //clear_window();
@@ -240,9 +285,10 @@ int main () {
         // Mostrar Respostas Parciais
         showPlayersScore(player, n, countMatchs, category_selected);
         countMatchs++;
-    }while(countMatchs < 3);
-        showPlayersScore(player, n, countMatchs, category_selected);
+    }while(countMatchs < 3); 
 
+    //showPlayersScore(player, n, countMatchs, category_selected);
+    */
 
     printf("\ntudo certo ate aqui!\n");    
 
