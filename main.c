@@ -66,6 +66,15 @@ int check_qtd_players(int n) {
     return n;
 }
 
+int check_order(int *vet1, int index) {
+    if(vet1[index] == index) {
+        return 1;
+    } else {
+        vet1[index] = index;
+        return 0;
+    }
+}
+
 int check_letter(int *letter_draw, int index) {
     int checked = 0;
     if (index == letter_draw[index]) {
@@ -124,7 +133,6 @@ void players_name(Player *player, int n) {
             memset(player[i].name, 0, sizeof(player[i].name));
             printf("nome jogador %d: ", i+1);
             scanf("%s", player[i].name);
-
         }
     }
 }
@@ -166,6 +174,24 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
 
 }
 
+void random_order(int *vet1, int *vet2, int n) {
+    int index;
+
+    for (int i = 0; i < n; i++) {
+        index = rand()%n;
+        while (check_order(vet1, index)) {
+            index = rand()%n;
+        }
+        vet2[i] = vet1[index];
+    }
+}
+
+void show_order(Player *player, int *vet2, int n) {
+    for (int i = 0; i < n; i++) {
+        printf("%d. %s\n", i+1, player[vet2[i]].name);
+    }
+}
+
 int main () {
     char alphabet[23];
     int letter_draw[23];
@@ -175,7 +201,9 @@ int main () {
     char *category_selected;
     char convert[256];
     int n;
-    int random1, random2, random3;
+    int *p = &n;
+    int vet1[*p];
+    int vet2[*p];
     int countMatchs = 0;
     Player *player;
 
@@ -216,6 +244,13 @@ int main () {
         printf("categoria sorteada: %s\n", category_selected);
         printf("------------------------------------------------------\n");
 
+        memset(vet1, -1, sizeof(vet1));
+        random_order(vet1, vet2, n); // a ordem está no vet2
+
+        printf("------------------------------------------------------\n");
+        printf("A ordem desta rodada sera: \n");
+        show_order(player, vet2, n);
+        printf("------------------------------------------------------\n");
 
         // Loop para os jogadores
             // escolher um jogador randomicamente
