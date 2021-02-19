@@ -66,57 +66,39 @@ int check_qtd_players(int n) {
     return n;
 }
 
-int check_order(int *vet1, int index) {
-    if(vet1[index] == index) {
+int draw_number(int range) {
+    int draw = rand()%range;
+    return draw;
+}
+
+int check_draw(int *array_draw, int index) {
+    if(array_draw[index] == index) {
         return 1;
     } else {
-        vet1[index] = index;
+        array_draw[index] = index;
         return 0;
     }
 }
 
-int check_letter(int *letter_draw, int index) {
-    int checked = 0;
-    if (index == letter_draw[index]) {
-        return 1;
-    } else {
-        letter_draw[index] = index;
-        return checked;
+int get_index(int *array_draw, int n) {
+    int index = draw_number(n);
+
+    while(check_draw(array_draw, index)) {
+        index = draw_number(n);
     }
+
+    return index;
 }
 
-char get_letter(char *alphabet, int *letter_draw) {
-    int index;
+void random_order(int *vet1, int *vet2, int n) {
+    int index = draw_number(n);
 
-    index = rand()%23;
-
-    while(check_letter(letter_draw, index)) {
-        index = rand()%23;
+    for (int i = 0; i < n; i++) {
+        while (check_draw(vet1, index)) {
+            index = draw_number(n);
+        }
+        vet2[i] = vet1[index];
     }
-
-    return alphabet[index];
-}
-
-int check_category(int *category_draw, int index) {
-    int checked = 0;
-    if (index == category_draw[index]) {
-        return 1;
-    } else {
-        category_draw[index] = index;
-        return checked;
-    }
-}
-
-char* get_category(char **category, int *category_draw) {
-    int index;
-
-    index = rand()%5;
-
-    while(check_category(category_draw, index)) {
-        index = rand()%5;
-    }
-
-    return category[index];
 }
 
 Player* players(int n) {
@@ -151,7 +133,7 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
     }
 
     printf("------------------------------------------------------\n");
-    printf("TABELA DE SCORES DA RODADA\n");
+    printf("TABELA DE ESCORES DA RODADA\n");
     printf("------------------------------------------------------\n");
 
     for(int i  = 0; i < players; i++){
@@ -174,22 +156,14 @@ void showPlayersScore(Player *player, int players, int countMatchs, char *catego
 
 }
 
-void random_order(int *vet1, int *vet2, int n) {
-    int index;
-
-    for (int i = 0; i < n; i++) {
-        index = rand()%n;
-        while (check_order(vet1, index)) {
-            index = rand()%n;
-        }
-        vet2[i] = vet1[index];
-    }
-}
-
 void show_order(Player *player, int *vet2, int n) {
     for (int i = 0; i < n; i++) {
         printf("%d. %s\n", i+1, player[vet2[i]].name);
     }
+}
+
+void clear_window() {
+    system("cls");
 }
 
 int main () {
@@ -205,6 +179,7 @@ int main () {
     int vet1[*p];
     int vet2[*p];
     int countMatchs = 0;
+    char teste;
     Player *player;
 
     memset(letter_draw, -1, sizeof(letter_draw));
@@ -232,13 +207,13 @@ int main () {
     fill_category(category);
 
     do{
-        letter = get_letter(alphabet, letter_draw);
+        letter = alphabet[get_index(letter_draw, 23)];
 
         printf("------------------------------------------------------\n");
         printf("letra sorteada: %c\n", letter);
         printf("------------------------------------------------------\n");
 
-        category_selected = get_category(category, category_draw);
+        category_selected = category[get_index(category_draw, 5)];
 
         printf("------------------------------------------------------\n");
         printf("categoria sorteada: %s\n", category_selected);
@@ -251,6 +226,10 @@ int main () {
         printf("A ordem desta rodada sera: \n");
         show_order(player, vet2, n);
         printf("------------------------------------------------------\n");
+
+        //printf("Aperte enter\n");
+        
+        //clear_window();
 
         // Loop para os jogadores
             // escolher um jogador randomicamente
@@ -265,18 +244,7 @@ int main () {
         showPlayersScore(player, n, countMatchs, category_selected);
 
 
-
     printf("\ntudo certo ate aqui!\n");    
-
-    /*char v[14];
-    memset(v, 0, sizeof(v));
-    scanf("%s", v);
-    while (v[13]) {
-        memset(v, 0, sizeof(v));
-        scanf("%s", v);
-    }
-    printf("%s\n", v);
-    printf("%lu\n", strlen(v));*/
 
     return 0;
 }
