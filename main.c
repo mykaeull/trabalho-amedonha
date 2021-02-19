@@ -167,6 +167,14 @@ void show_order(Player *player, int *vet2, int n) {
     }
 }
 
+void respostas(Player *player, int *vet2, char letter, char *category_selected, int n) { // tem q colocar um cont pro ponto parcial
+    char teste[256];
+    for (int k = 0; k < n; k++) {
+        printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
+        fgets(teste, 256, stdin);
+    }
+}
+
 void clear_window() {
     system("cls");
 }
@@ -179,7 +187,7 @@ int main () {
     int category_draw[5];
     char *category_selected;
     char convert[256];
-    int n, i, j;
+    int n;
     int *p = &n;
     int vet1[*p];
     int vet2[*p];
@@ -214,7 +222,7 @@ int main () {
 
     system("cls");
 
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
 
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -236,13 +244,11 @@ int main () {
         show_order(player, vet2, n);
         printf("------------------------------------------------------\n");
 
-        printf("\n%d\n", n);
-
-        printf("Aperte enter");
+        printf("Aperte enter\n");
         getchar();
         clear_window();
 
-        
+        respostas(player, vet2, letter, category_selected, n);
 
     }
 
