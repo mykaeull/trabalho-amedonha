@@ -261,7 +261,7 @@ int main () {
     int vet1[*p];
     int vet2[*p];
     int countMatchs = 0;
-    char *vet_respostas[3]; // *p
+    char *vet_respostas[10]; // *p
     Player *player;
 
     memset(letter_draw, -1, sizeof(letter_draw));
@@ -291,7 +291,7 @@ int main () {
 
     clear_window();
 
-    for (int i = 0; i < 1; i++) {
+    for (int i = 0; i < 2; i++) {
 
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -321,7 +321,8 @@ int main () {
 
         computar_resposta(player, vet_respostas, n, i);
 
-        printf("\n%d\n", player[0].ponto_parcial[0]);
+        printf("\n%d\n", player[0].ponto_parcial[i]);
+        //getchar();
 
         // printf("\n%s\n", vet_respostas[0]);
 
