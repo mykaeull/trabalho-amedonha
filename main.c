@@ -2,20 +2,22 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct player Player;
-typedef struct pontoParcial PontoParcial;
+// typedef struct pontoParcial PontoParcial;
 
-struct pontoParcial {
+/*struct pontoParcial {
     char modalidade[20];
     int ponto;
     char resposta[30];
-};
+};*/
 
 struct player {
   char name[256]; 
   int pontoFinal; 
-  PontoParcial pontoParcial[3];
+  int ponto_parcial[5];
+  char resposta[256];
 };
 
 void fill_alphabet(char *alphabet) {
@@ -167,11 +169,78 @@ void show_order(Player *player, int *vet2, int n) {
     }
 }
 
-void respostas(Player *player, int *vet2, char letter, char *category_selected, int n) { // tem q colocar um cont pro ponto parcial
-    char teste[256];
-    for (int k = 0; k < n; k++) { 
-        printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
-        fgets(teste, 256, stdin);
+void primeiro_nome(char *resposta){
+  char* parte = strtok(resposta," ");
+}
+
+void tratar_respostas(char *resposta){
+    int i = 0;
+
+    for(i = 0; i < strlen(resposta); i++){
+        resposta[i] = tolower(resposta[i]);
+    }
+    // printf("%s", resposta);
+}
+
+int verificar_respostas(char *resposta, char letter,char *category_selected){
+
+    if(strcmp(category_selected,"nomes de pessoas") == 0){
+        primeiro_nome(resposta);
+        tratar_respostas(resposta);
+    }else{
+        tratar_respostas(resposta);
+    }
+
+    if(strlen(resposta) <= 30 && resposta[0] == letter){
+        return 1;
+    }else {
+        return 0;
+    }
+}
+
+void respostas(Player *player, int *vet2, char letter, char *category_selected, int n, char **vet_respostas) { // tem q colocar um cont pro ponto parcial
+    char resultado;
+    int mostrar_mensagem = 1;
+
+    for (int k = 0; k < n;) {
+        if (mostrar_mensagem) {
+            printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
+        }
+        mostrar_mensagem = 1;
+        fgets(player[vet2[k]].resposta, 256, stdin);
+        player[vet2[k]].resposta[strlen(player[vet2[k]].resposta) - 1] = '\0';
+        resultado = verificar_respostas(player[vet2[k]].resposta, letter, category_selected);
+
+        if (resultado) {
+            vet_respostas[vet2[k]] = player[vet2[k]].resposta;
+            k++;
+            system("cls");
+        } else {
+            mostrar_mensagem = 0;
+            printf("Resposta Invalida, digite novamente:\n");
+        }
+    }
+}
+
+void computar_resposta(Player *player, char **vet_respostas, int n, int k) {
+    int cont = 0;
+    double div;
+    int teto;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (strcmp(vet_respostas[i], vet_respostas[j]) == 0) {
+                //printf("deu certo\n");
+                cont += 1;
+            }
+            //printf("aqui\n");
+        }
+        div = (((double)strlen(vet_respostas[i]))/((double)cont));
+        teto = ((int)div);
+        teto += ((double)teto!=div);
+        //printf("\nAQUIII\n");
+        player[i].ponto_parcial[k] = teto;
+        cont = 0;
     }
 }
 
@@ -192,7 +261,7 @@ int main () {
     int vet1[*p];
     int vet2[*p];
     int countMatchs = 0;
-    char teste[256];
+    char *vet_respostas[3]; // *p
     Player *player;
 
     memset(letter_draw, -1, sizeof(letter_draw));
@@ -220,9 +289,9 @@ int main () {
     fill_alphabet(alphabet);
     fill_category(category);
 
-    system("cls");
+    clear_window();
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 1; i++) {
 
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -248,53 +317,15 @@ int main () {
         getchar();
         clear_window();
 
-        respostas(player, vet2, letter, category_selected, n);
+        respostas(player, vet2, letter, category_selected, n, vet_respostas);
+
+        computar_resposta(player, vet_respostas, n, i);
+
+        printf("\n%d\n", player[0].ponto_parcial[0]);
+
+        // printf("\n%s\n", vet_respostas[0]);
 
     }
-
-    /*
-    do{
-        letter = alphabet[get_index(letter_draw, 23)];
-
-        printf("------------------------------------------------------\n");
-        printf("letra sorteada: %c\n", letter);
-        printf("------------------------------------------------------\n");
-
-        category_selected = category[get_index(category_draw, 5)];
-
-        printf("------------------------------------------------------\n");
-        printf("categoria sorteada: %s\n", category_selected);
-        printf("------------------------------------------------------\n");
-
-        memset(vet1, -1, sizeof(vet1));
-        random_order(vet1, vet2, n); // a ordem está no vet2
-
-        printf("------------------------------------------------------\n");
-        printf("A ordem desta rodada sera: \n");
-        show_order(player, vet2, n);
-        printf("------------------------------------------------------\n");
-
-        //scanf("%d", &teste);
-
-        //system("cls");
-
-        //printf("Aperte enter\n");
-        
-        //clear_window();
-
-        // Loop para os jogadores
-            // escolher um jogador randomicamente
-            // pegar as respostas por jogador
-            // ele tem N segundos para responder
-            // computar a resposta
-
-        // Mostrar Respostas Parciais
-        showPlayersScore(player, n, countMatchs, category_selected);
-        countMatchs++;
-    }while(countMatchs < 3); 
-
-    //showPlayersScore(player, n, countMatchs, category_selected);
-    */
 
     printf("\ntudo certo ate aqui!\n");    
 
