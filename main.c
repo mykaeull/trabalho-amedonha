@@ -13,8 +13,8 @@ struct pontoParcial {
 };
 
 struct player {
-  char name[256];
-  int pontoFinal;
+  char name[256]; 
+  int pontoFinal; 
   PontoParcial pontoParcial[3];
 };
 
@@ -169,7 +169,7 @@ void show_order(Player *player, int *vet2, int n) {
 
 void respostas(Player *player, int *vet2, char letter, char *category_selected, int n) { // tem q colocar um cont pro ponto parcial
     char teste[256];
-    for (int k = 0; k < n; k++) {
+    for (int k = 0; k < n; k++) { 
         printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
         fgets(teste, 256, stdin);
     }
