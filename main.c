@@ -124,45 +124,6 @@ void players_name(Player *player, int n) {
     }
 }
 
-/*
-void showPlayersScore(Player *player, int players, int countMatchs, char *categoryType){
-    printf("------------------------------------------------------\n");
-    printf("Jogadas Realizadas\n");
-    printf("------------------------------------------------------\n");
-    
-    for(int i = 0; i < players; i++){
-        for(int j = 0; j < 4; j++){
-            if(player[i].pontoParcial[j].modalidade == categoryType){
-                printf("Player %s: %s\n",player[i].name, player[i].pontoParcial[j].resposta);
-            }
-        }
-    }
-
-    printf("------------------------------------------------------\n");
-    printf("TABELA DE ESCORES DA RODADA %d\n", countMatchs+1);
-    printf("------------------------------------------------------\n");
-
-    for(int i  = 0; i < players; i++){
-        printf("------------------------------------------------------\n");
-        printf("Player %s", player[i].name);
-        printf("------------------------------------------------------\n");
-        for(int j = 0; j < 4; j++){
-            // mostrara os resultados parciais
-            if(player[i].pontoParcial[j].ponto == 0){
-                printf("Type:  %s \n", player[i].pontoParcial[j].modalidade);
-                printf("Score:  %d \n", player[i].pontoParcial[j].ponto);
-            }
-        }
-        // mostrara os resultados finais
-        if(countMatchs == 3){ 
-            printf("Final Score:  %d \n", player[i].pontoFinal);
-        }
-
-    }
-
-}
-*/
-
 void show_order(Player *player, int *vet2, int n) {
     for (int i = 0; i < n; i++) {
         printf("%d. %s\n", i+1, player[vet2[i]].name);
@@ -244,6 +205,29 @@ void computar_resposta(Player *player, char **vet_respostas, int n, int k) {
     }
 }
 
+void show_points(Player* player,int* ordemJogador, char** categories_played,int nJogadores,int rodada ){
+    printf("Jogadas Realizadas\n\n");
+    for (int j = 0; j < nJogadores; j++){
+        printf("%s: ", player[ordemJogador[j]].name);
+        printf("%s\n", player[ordemJogador[j]].resposta);
+    }
+
+    printf("\nConcluida a rodada, esta e a tabela de escores:\n\n");
+
+    // printar espaço
+    for (int k = 0; k <= rodada; k++){
+        printf("%s  ", categories_played[rodada]);
+    }
+    printf("\n");
+    for (int k = 0; k <= rodada; k++){
+        for (int j = 0; j < nJogadores; j++){
+            printf("%s: ", player[ordemJogador[j]].name);
+            printf("%d\n", player[ordemJogador[j]].ponto_parcial[k]);
+        }
+        printf("\n");
+    }
+}
+
 void clear_window() {
     system("cls");
 }
@@ -261,6 +245,7 @@ int main () {
     int vet1[*p];
     int vet2[*p];
     int countMatchs = 0;
+    char *categories_played[5];
     char *vet_respostas[10]; // *p
     Player *player;
 
@@ -291,7 +276,7 @@ int main () {
 
     clear_window();
 
-    for (int i = 0; i < 2; i++) {
+    for (int i = 0; i < 3; i++) {
 
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -300,6 +285,7 @@ int main () {
         printf("------------------------------------------------------\n");
 
         category_selected = category[get_index(category_draw, 5)];
+        categories_played[i] = category_selected;
 
         printf("------------------------------------------------------\n");
         printf("categoria sorteada: %s\n", category_selected);
@@ -320,8 +306,10 @@ int main () {
         respostas(player, vet2, letter, category_selected, n, vet_respostas);
 
         computar_resposta(player, vet_respostas, n, i);
+        
+        show_points(player,vet2,categories_played,n,i);
 
-        printf("\n%d\n", player[0].ponto_parcial[i]);
+        //printf("\n%d\n", player[0].ponto_parcial[i]);
         //getchar();
 
         // printf("\n%s\n", vet_respostas[0]);
