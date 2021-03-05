@@ -241,9 +241,8 @@ int main () {
     char *category_selected;
     char convert[256];
     int n;
-    int *p = &n;
-    int vet1[*p];
-    int vet2[*p];
+    int *vet1;
+    int *vet2;
     int countMatchs = 0;
     char *categories_played[5];
     char *vet_respostas[10]; // *p
@@ -258,9 +257,11 @@ int main () {
     fgets(convert, 256, stdin);
     //scanf("%s", &convert);
     n = atoi(convert);
-
     n = check_qtd_players(n);
     
+	vet1 = malloc(n * sizeof(int));
+	vet2 = malloc(n * sizeof(int));
+
     player = players(n);
 
     players_name(player, n);
@@ -291,7 +292,7 @@ int main () {
         printf("categoria sorteada: %s\n", category_selected);
         printf("------------------------------------------------------\n");
 
-        memset(vet1, -1, sizeof(vet1));
+        memset(vet1, -1, n * sizeof(int));
         random_order(vet1, vet2, n); // ordem aleatoria ta no vet2
 
         printf("------------------------------------------------------\n");
