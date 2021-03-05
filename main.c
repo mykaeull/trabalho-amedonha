@@ -1,9 +1,8 @@
-// oii
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <ctype.h>
 
 typedef struct player Player;
 typedef struct pontoParcial PontoParcial;
@@ -11,13 +10,13 @@ typedef struct pontoParcial PontoParcial;
 struct pontoParcial {
     char modalidade[20];
     int ponto;
-    char resposta[30];
 };
 
 struct player {
   char name[256];
   int pontoFinal;
   PontoParcial pontoParcial[3];
+  char resposta[30];
 };
 
 void fill_alphabet(char *alphabet) {
@@ -169,13 +168,68 @@ void show_order(Player *player, int *vet2, int n) {
     }
 }
 
-void respostas(Player *player, int *vet2, char letter, char *category_selected, int n) { // tem q colocar um cont pro ponto parcial
-    char teste[256];
-    for (int k = 0; k < n; k++) {
-        printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
-        fgets(teste, 256, stdin);
+void primeiro_nome(char *resposta){
+
+  char* parte = strtok(resposta," ");
+  
+}
+
+void tratar_respostas(char *resposta){
+    int i = 0;
+
+    for(i = 0; i < strlen(resposta); i++){
+        resposta[i] = tolower(resposta[i]);
+    }
+    // printf("%s", resposta);
+}
+
+int verificar_respostas(char *resposta, char letter,char *category_selected){
+
+    if(category_selected == "nomes de pessoas"){
+        primeiro_nome(resposta);
+        tratar_respostas(resposta);
+    }else{
+        tratar_respostas(resposta);
+    }
+
+    if(strlen(resposta) <= 30 && resposta[0] == letter){
+        return 1;
+    }else {
+        return 0;
     }
 }
+
+void respostas(Player *player, int *vet2, char letter, char *category_selected, int n) {  // tem q colocar um cont pro ponto parcial
+    char resultado;
+    int mostra_mensagem = 1;
+    
+
+    for (int k = 0; k < n;) {
+        if (mostra_mensagem) {
+          printf("%s, você deve entrar um '%s' com a letra '%c' em tantos segundos:\n", player[vet2[k]].name, category_selected, letter);
+        }
+        
+        mostra_mensagem = 1;
+        fgets(player[vet2[k]].resposta, 256, stdin);
+        resultado = verificar_respostas(player[vet2[k]].resposta, letter, category_selected);
+        
+        if(resultado){
+            printf("%s\n", player[vet2[k]].resposta);
+            k++;
+        }else{
+            mostra_mensagem = 0;
+            printf("Resposta Inválida, digite novamente:\n");
+        }  
+
+    }
+    printf("------------------------------------------------------\n");
+    printf("Jogadas realizadas: \n");
+    for (int i = 0; i < n; i++) {
+        printf("%s : %s \n", player[vet2[i]].name, player[vet2[i]].resposta);
+
+    }
+}
+
 
 void clear_window() {
     system("cls");
@@ -213,11 +267,11 @@ int main () {
 
     players_name(player, n);
 
-    /* TESTE DE NOMES
-    printf("%s\n", player[0].nome);
-    printf("%s\n", player[1].nome);
-    printf("%s\n", player[2].nome);
-    */
+    
+    printf("%s\n", player[0].name);
+    printf("%s\n", player[1].name);
+    printf("%s\n", player[2].name);
+    
 
     fill_alphabet(alphabet);
     fill_category(category);
@@ -254,8 +308,8 @@ int main () {
 
     }
 
-    /*
-    do{
+    
+    /*do{
         letter = alphabet[get_index(letter_draw, 23)];
 
         printf("------------------------------------------------------\n");
@@ -295,8 +349,8 @@ int main () {
         countMatchs++;
     }while(countMatchs < 3); 
 
-    //showPlayersScore(player, n, countMatchs, category_selected);
-    */
+    //showPlayersScore(player, n, countMatchs, category_selected); */
+    
 
     printf("\ntudo certo ate aqui!\n");    
 
