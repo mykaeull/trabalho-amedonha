@@ -3,6 +3,7 @@
 #include <time.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/time.h>
 
 typedef struct player Player;
 // typedef struct pontoParcial PontoParcial;
@@ -162,8 +163,11 @@ int verificar_respostas(char *resposta, char letter,char *category_selected){
 void respostas(Player *player, int *vet2, char letter, char *category_selected, int n, char **vet_respostas) { // tem q colocar um cont pro ponto parcial
     char resultado;
     int mostrar_mensagem = 1;
+    struct timeval  inicio, fim;
+    double tempo_total;
 
     for (int k = 0; k < n;) {
+        gettimeofday(&inicio, NULL);
         if (mostrar_mensagem) {
             printf("%s, voce deve entrar um '%s' com a letra '%c' em tantos segundos\n", player[vet2[k]].name, category_selected, letter);
         }
@@ -173,9 +177,18 @@ void respostas(Player *player, int *vet2, char letter, char *category_selected, 
         resultado = verificar_respostas(player[vet2[k]].resposta, letter, category_selected);
 
         if (resultado) {
-            vet_respostas[vet2[k]] = player[vet2[k]].resposta;
-            k++;
-            system("cls");
+            gettimeofday(&fim, NULL);
+            tempo_total = (double) (fim.tv_usec - inicio.tv_usec) / 1000000 + (double) (fim.tv_sec - inicio.tv_sec);
+            if (tempo_total <= (double)((8 + (2*n) - (2*k)))) {
+              printf("\n%f\n", tempo_total);
+              vet_respostas[vet2[k]] = player[vet2[k]].resposta;
+              k++;
+            } else {
+              printf("\n%f\n", tempo_total);
+              vet_respostas[vet2[k]] = "";
+              k++;
+            }
+            //system("cls");
         } else {
             mostrar_mensagem = 0;
             printf("Resposta Invalida, digite novamente:\n");
@@ -206,26 +219,60 @@ void computar_resposta(Player *player, char **vet_respostas, int n, int k) {
 }
 
 void show_points(Player* player,int* ordemJogador, char** categories_played,int nJogadores,int rodada ){
-    printf("Jogadas Realizadas\n\n");
+    printf("------------------------------------------------------\n");
+    printf("Jogadas Realizadas:\n");
+    printf("------------------------------------------------------\n");
     for (int j = 0; j < nJogadores; j++){
         printf("%s: ", player[ordemJogador[j]].name);
-        printf("%s\n", player[ordemJogador[j]].resposta);
-    }
-
-    printf("\nConcluida a rodada, esta e a tabela de escores:\n\n");
-
-    // printar espaço
-    for (int k = 0; k <= rodada; k++){
-        printf("%s  ", categories_played[rodada]);
-    }
-    printf("\n");
-    for (int k = 0; k <= rodada; k++){
-        for (int j = 0; j < nJogadores; j++){
-            printf("%s: ", player[ordemJogador[j]].name);
-            printf("%d\n", player[ordemJogador[j]].ponto_parcial[k]);
-        }
+        printf("%s ", player[ordemJogador[j]].resposta);
         printf("\n");
     }
+    printf("------------------------------------------------------\n");
+    printf("\nConcluida a rodada, esta eh a tabela de escores:\n\n");
+
+    // printar espaço
+    printf("\t\t");
+    for (int k = 0; k <= rodada; k++){
+        printf("%s  ", categories_played[k]);
+    }
+    //  caso forem 3 rodadas
+    if(rodada == 4){
+      printf("Total Geral");
+    }else{
+      printf("Total Parcial");
+    }
+    printf("\n");
+    for (int j = 0; j < nJogadores; j++){
+      int ponto_total = 0;
+      printf("%s: ", player[ordemJogador[j]].name);
+      for (int k = 0; k <= rodada; k++){
+          ponto_total += player[ordemJogador[j]].ponto_parcial[k]; 
+          printf("\t\t\t\t");
+          printf("%d ", player[ordemJogador[j]].ponto_parcial[k]);
+      }
+      printf("\t\t\t");
+      printf("%d", ponto_total);
+      if(rodada == 4){
+        player[ordemJogador[j]].pontoFinal = ponto_total;
+      }
+      printf("\n");
+      printf("\n");
+    }
+}
+
+void gerarVencedor(Player* player,int nJogadores){
+  int maior_ponto = 0;
+  for(int i = 0; i < nJogadores; i++){
+    if(maior_ponto < player[i].pontoFinal){
+      maior_ponto = player[i].pontoFinal;
+    }
+  }
+
+  for(int i = 0; i < nJogadores; i++){
+    if(maior_ponto == player[i].pontoFinal){
+      printf("O ganhador eh: %s", player[i].name);
+    }
+  }
 }
 
 void clear_window() {
@@ -276,8 +323,8 @@ int main () {
     fill_category(category);
 
     clear_window();
-
-    for (int i = 0; i < 3; i++) {
+	
+    for (int i = 0; i < 5; i++) {
 
         letter = alphabet[get_index(letter_draw, 23)];
 
@@ -305,11 +352,14 @@ int main () {
         clear_window();
 
         respostas(player, vet2, letter, category_selected, n, vet_respostas);
-
+        printf("\n");
         computar_resposta(player, vet_respostas, n, i);
         
         show_points(player,vet2,categories_played,n,i);
 
+        if(i == 4){
+          gerarVencedor(player,i);
+        }
         //printf("\n%d\n", player[0].ponto_parcial[i]);
         //getchar();
 
