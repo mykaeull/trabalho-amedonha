@@ -9,7 +9,7 @@ typedef struct player Player;
 
 struct player {
   char nome[256]; 
-  int pontoFinal; 
+  int ponto_final; 
   int ponto_parcial[5];
   char resposta[256];
   double tempo_total;
@@ -100,6 +100,9 @@ void gerar_ordem_aleatoria(int *vet1, int *vet2, int n) {
 
 Player* criar_players(int n) {
     Player *player = (Player*)malloc(n*sizeof(Player));
+    for (int i = 0; i < n; i++) {
+        player[i].ponto_final = 0;
+    }
     return player;
 }
 
@@ -203,14 +206,15 @@ void computar_resposta(Player *player, char **vet_respostas, int n, int k) {
         teto = ((int)div);
         teto += ((double)teto!=div);
         player[i].ponto_parcial[k] = teto;
+        player[i].ponto_final += player[i].ponto_parcial[k];
         cont = 0;
     }
 }
 
 void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,int nJogadores,int rodada ){
     printf("------------------------------------------------------\n");
-    printf("Jogadas Realizadas:\n");
-    printf("------------------------------------------------------\n");
+    printf("Jogadas Realizadas\n");
+    //printf("------------------------------------------------------\n");
     for (int j = 0; j < nJogadores; j++){
         printf("%s: ", player[ordemJogador[j]].nome);
         printf("%s ", player[ordemJogador[j]].resposta);
@@ -220,45 +224,43 @@ void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,
     printf("\nConcluida a rodada, esta eh a tabela de escores:\n\n");
 
     // printar espaço
-    printf("\t\t");
+    printf("=======================================================\n");
     for (int k = 0; k <= rodada; k++){
-        printf("%s  ", categorias_jogadas[k]);
+        printf("%s\n", categorias_jogadas[k]);
+        for(int i = 0 ;i < nJogadores; i++){
+          printf("%s: ", player[ordemJogador[i]].nome);
+          printf("%d", player[ordemJogador[i]].ponto_parcial[k]);
+          // player[ordemJogador[i]].ponto_final += player[ordemJogador[i]].ponto_parcial[k]; // k
+          printf("\n");
+        }
+          printf("------------------------------------------------------\n");
+          //printf("\n");
     }
     //  caso forem 3 rodadas
     if(rodada == 4){
-      printf("Total Geral");
+      printf("Total Geral\n");
     }else{
-      printf("Total Parcial");
+      printf("Total Parcial\n");
     }
-    printf("\n");
     for (int j = 0; j < nJogadores; j++){
-      int ponto_total = 0;
-      printf("%s: ", player[ordemJogador[j]].nome);
-      for (int k = 0; k <= rodada; k++){
-          ponto_total += player[ordemJogador[j]].ponto_parcial[k]; 
-          printf("\t\t\t\t");
-          printf("%d ", player[ordemJogador[j]].ponto_parcial[k]);
-      }
-      printf("\t\t\t");
-      printf("%d", ponto_total);
-      if(rodada == 4){
-        player[ordemJogador[j]].pontoFinal = ponto_total;
-      }
-      printf("\n");
-      printf("\n");
+        printf("%s: ", player[ordemJogador[j]].nome);
+        printf("%d", player[ordemJogador[j]].ponto_final);
+        printf("\n");
     }
+    //printf("\n");
+    printf("=======================================================\n");
 }
 
 void gerar_vencedor(Player* player,int nJogadores){
   int maior_ponto = 0;
   for(int i = 0; i < nJogadores; i++){
-    if(maior_ponto < player[i].pontoFinal){
-      maior_ponto = player[i].pontoFinal;
+    if(maior_ponto < player[i].ponto_final){
+      maior_ponto = player[i].ponto_final;
     }
   }
 
   for(int i = 0; i < nJogadores; i++){
-    if(maior_ponto == player[i].pontoFinal){
+    if(maior_ponto == player[i].ponto_final){
       printf("O ganhador eh: %s", player[i].nome);
     }
   }
@@ -290,7 +292,6 @@ int main () {
 
     printf("entre a quantidade de jogadores: ");
     fgets(converter, 256, stdin);
-    //scanf("%s", &converter);
     n = atoi(converter);
     n = verificar_qtd_players(n);
     
