@@ -18,3 +18,5 @@ respostas.o: respostas.c funcoes.h
 sorteios.o: sorteios.c funcoes.h
 	gcc -c sorteios.c
 
+clean:
+	rm -f *.o main
