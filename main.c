@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
-#include "./funcoes.h"
+#include "funcoes.h"
 
 int main () {
 

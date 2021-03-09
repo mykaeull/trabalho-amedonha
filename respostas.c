@@ -53,7 +53,7 @@ void respostas(Player *player, int *vet2, char letra, char *categoria_selecionad
               vet_respostas[vet2[k]] = "";
               k++;
             }
-            //system("cls");
+            system("clear");
         } else {
             mostrar_mensagem = 0;
             printf("Resposta Invalida, digite novamente:\n");
