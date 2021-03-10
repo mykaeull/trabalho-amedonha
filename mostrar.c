@@ -21,7 +21,7 @@ void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,
         printf("\n");
     }
     printf("------------------------------------------------------\n");
-    printf("\nConcluida a rodada, esta eh a tabela de escores:\n\n");
+    printf("\nConcluida a rodada, esta eh a tabela de escores\n");
 
     printf("=======================================================\n");
     for (int k = 0; k <= rodada; k++){
@@ -44,8 +44,10 @@ void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,
         printf("%d", player[ordemJogador[j]].ponto_final);
         printf("\n");
     }
-  
     printf("=======================================================\n");
+    printf("Tecle [ENTER] para iniciar a proxima rodada\n");
+    getchar();
+    system("clear");
 }
 
 void gerar_vencedor(Player* player,int nJogadores){ // Carlos
@@ -66,7 +68,7 @@ void gerar_vencedor(Player* player,int nJogadores){ // Carlos
   if(quant_nJogadore_ganhou == 1){
     for(int i = 0; i < nJogadores; i++){
       if(maior_ponto == player[i].ponto_final){
-        printf("O ganhador eh: %s", player[i].nome);
+        printf("O ganhador eh: %s\n", player[i].nome);
       }
     }
   }else{

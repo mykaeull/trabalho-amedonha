@@ -44,7 +44,7 @@ void play_game() {
     preencher_alfabeto(alfabeto);
     preencher_categoria(categoria);
 
-    system("cls");
+    system("clear");
 
     for (int i = 0; i < 5; i++) {
 
@@ -69,9 +69,9 @@ void play_game() {
         mostrar_ordem(player, vet2, n);
         printf("------------------------------------------------------\n");
 
-        printf("Aperte enter\n");
+        printf("Tecle [ENTER] para iniciar a rodada\n");
         getchar();
-        system("cls");
+        system("clear");
 
         respostas(player, vet2, letra, categoria_selecionada, n, vet_respostas);
         printf("\n");

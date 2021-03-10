@@ -1,16 +1,22 @@
-all: entrada.o mostrar.o play.o preencher.o respostas.o sorteios.o
-	gcc entrada.o mostrar.o play.o preencher.o respostas.o sorteios.o main.c -o main
+target: main
 
-entrada.o: funcoes.h
+main: main.o entrada.o mostrar.o play.o preencher.o respostas.o sorteios.o
+	gcc main.o entrada.o mostrar.o play.o preencher.o respostas.o sorteios.o -o main
+
+main.o: main.c funcoes.h
+	gcc -c main.c
+entrada.o: entrada.c funcoes.h
 	gcc -c entrada.c
-mostrar.o: funcoes.h
+mostrar.o: mostrar.c funcoes.h
 	gcc -c mostrar.c
-play.o: funcoes.h
+play.o: play.c funcoes.h
 	gcc -c play.c
-preencher.o: funcoes.h
+preencher.o: preencher.c funcoes.h
 	gcc -c preencher.c
-respostas.o: funcoes.h
+respostas.o: respostas.c funcoes.h
 	gcc -c respostas.c
-sorteios.o: funcoes.h
+sorteios.o: sorteios.c funcoes.h
 	gcc -c sorteios.c
 
+clean:
+	rm -f *.o main
