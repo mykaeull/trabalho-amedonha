@@ -3,10 +3,6 @@
 // Domingos Mykaeull Gomes Peres - 500594
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include <string.h>
-#include "./funcoes.h"
 
 int main () {
 
