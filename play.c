@@ -18,8 +18,8 @@ void play_game() {
     char *categoria_selecionada;
     char converter[256];
     int n;
-    int *vet1;
-    int *vet2;
+    int *vetor_de_sorteados;
+    int *vetor_ordem;
     char *categorias_jogadas[5];
     char *vet_respostas[10];
     Player *player;
@@ -34,8 +34,8 @@ void play_game() {
     n = atoi(converter);
     n = verificar_qtd_players(n);
     
-    vet1 = malloc(n * sizeof(int));
-    vet2 = malloc(n * sizeof(int));
+    vetor_de_sorteados = malloc(n * sizeof(int));
+    vetor_ordem = malloc(n * sizeof(int));
 
     player = criar_players(n);
 
@@ -61,23 +61,23 @@ void play_game() {
         printf("categoria sorteada: %s\n", categoria_selecionada);
         printf("------------------------------------------------------\n");
 
-        memset(vet1, -1, n * sizeof(int));
-        gerar_ordem_aleatoria(vet1, vet2, n); 
+        memset(vetor_de_sorteados, -1, n * sizeof(int));
+        gerar_ordem_aleatoria(vetor_de_sorteados, vetor_ordem, n); 
 
         printf("------------------------------------------------------\n");
         printf("A ordem desta rodada sera: \n");
-        mostrar_ordem(player, vet2, n);
+        mostrar_ordem(player, vetor_ordem, n);
         printf("------------------------------------------------------\n");
 
         printf("Tecle [ENTER] para iniciar a rodada\n");
         getchar();
         system("clear");
 
-        respostas(player, vet2, letra, categoria_selecionada, n, vet_respostas);
+        respostas(player, vetor_ordem, letra, categoria_selecionada, n, vet_respostas);
         printf("\n");
-        computar_resposta(player, vet2, vet_respostas, n, i);
+        computar_resposta(player, vetor_ordem, vet_respostas, n, i);
         
-        mostrar_pontos(player, vet2,categorias_jogadas, n, i);
+        mostrar_pontos(player, vetor_ordem,categorias_jogadas, n, i);
 
         if(i == 4){
             gerar_vencedor(player,i);
