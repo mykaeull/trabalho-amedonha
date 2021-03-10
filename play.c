@@ -8,6 +8,7 @@
 #include <string.h>
 #include "funcoes.h"
 
+/*a função "play_game" é a responsável por gerir toda a lógica do jogo, primeiro declaramos as variaveis necessárias para receber os dados do jogo como letras do alfabeto, quantidade de jogadores, vetor com o nome das categorias, a ordem que sera jogada em cada rodada, o vetor que armazena os jogadores. Primeiro e pedido ao jogador que digite quantas pessoas estão jogando, com base na resposta e criado um vetor com o tamanho digitado e logo na sequencia e pedido para que se digite o nome de cada um. Por fim entrasse num loop que representa cada rodada, nesse loop são gerados a letra, a ordem em que os jogadores irão jogar e pegar as respostas, apos isso e mostrado o resultado a cada rodada e se caso for a rodada final, mostra-se o vencedor*/
 void play_game() {
     char alfabeto[23];
     int letra_sorteada[23];
