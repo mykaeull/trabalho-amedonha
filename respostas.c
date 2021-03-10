@@ -20,20 +20,40 @@ int verificar_respostas(char *resposta, char letra,char *categoria_selecionada){
     }
 
     if(strlen(resposta) <= 30 && resposta[0] == letra){
-        return 1;
-    }else {
         return 0;
+    }else {
+        return 1;
     }
 }
 
 void respostas(Player *player, int *vet2, char letra, char *categoria_selecionada, int n, char **vet_respostas) { // BRUNA
-    char resultado;
+    int resultado;
     int mostrar_mensagem = 1;
     struct timeval  inicio, fim;
     double tempo_total;
-
-    for (int k = 0; k < n;) {
+    
+    for (int k = 0; k < n; k++) {
         gettimeofday(&inicio, NULL);
+        printf("%s, voce deve entrar um '%s' com a letra '%c' em %d segundos\n", player[vet2[k]].nome, categoria_selecionada, letra, ((8 + (2*n)) - (2*k)));
+        fgets(player[vet2[k]].resposta, 256, stdin);
+        player[vet2[k]].resposta[strlen(player[vet2[k]].resposta) - 1] = '\0';
+        resultado = verificar_respostas(player[vet2[k]].resposta, letra, categoria_selecionada);
+        while (resultado) {
+            printf("Resposta Invalida, digite novamente:\n");
+            fgets(player[vet2[k]].resposta, 256, stdin);
+            player[vet2[k]].resposta[strlen(player[vet2[k]].resposta) - 1] = '\0';
+            resultado = verificar_respostas(player[vet2[k]].resposta, letra, categoria_selecionada);
+        }
+        gettimeofday(&fim, NULL);
+        tempo_total = (double) (fim.tv_usec - inicio.tv_usec) / 1000000 + (double) (fim.tv_sec - inicio.tv_sec);
+        player[vet2[k]].tempo_total += tempo_total;
+        if (tempo_total <= (double)((8 + (2*n) - (2*k)))) {
+            vet_respostas[vet2[k]] = player[vet2[k]].resposta;
+        } else {
+            vet_respostas[vet2[k]] = "";
+        }
+        system("clear");
+        /*gettimeofday(&inicio, NULL);
         if (mostrar_mensagem) {
             printf("%s, voce deve entrar um '%s' com a letra '%c' em %d segundos\n", player[vet2[k]].nome, categoria_selecionada, letra, ((8 + (2*n)) - (2*k)));
         }
@@ -56,10 +76,10 @@ void respostas(Player *player, int *vet2, char letra, char *categoria_selecionad
             system("clear");
         } else {
             mostrar_mensagem = 0;
-            printf("Resposta Invalida, digite novamente:\n");
-        }
+            printf("Resposta Invalida, digite novamente:\n");*/
     }
 }
+
 
 void computar_resposta(Player *player, int* ordemJogador, char **vet_respostas, int nJogadores, int n_rodadas) { // BRUNA
     int cont = 0;
