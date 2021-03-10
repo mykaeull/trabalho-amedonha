@@ -3,6 +3,7 @@
 // Domingos Mykaeull Gomes Peres - 500594
 
 #include <stdio.h>
+#include "funcoes.h"
 
 int main () {
 

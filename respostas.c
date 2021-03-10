@@ -10,6 +10,11 @@
 #include <sys/time.h>
 #include "funcoes.h"
 
+/* A função abaixo chama a função "primeiro_nome", caso a categoria sorteada seja
+   "nomes de pessoas" para selecionar apenas o primeiro nome. Além de chamar a função 
+   "tratar_respostas", a função "verificar_respostas" checa se a resposta que o usuário 
+   digitou tem o tamanho desejado de até 30 caracteres e se a resposta começa com a primeira 
+   letra sorteada pelo programa. */
 int verificar_respostas(char *resposta, char letra,char *categoria_selecionada){ //BRUNA
 
     if(strcmp(categoria_selecionada,"nomes de pessoas") == 0){
@@ -26,6 +31,9 @@ int verificar_respostas(char *resposta, char letra,char *categoria_selecionada){
     }
 }
 
+/* A função "respostas" utiliza de um "for" para passar pela quantidade de jogadores 
+   solicitando a resposta deles, assim ela armazena a resposta digitada pelo jogador com o 
+   auxílio do "fgets". Além de contar o tempo que o jogador tem para realizar sua jogada. */
 void respostas(Player *player, int *vet2, char letra, char *categoria_selecionada, int n, char **vet_respostas) { // BRUNA
     int resultado;
     int mostrar_mensagem = 1;
@@ -80,7 +88,6 @@ void respostas(Player *player, int *vet2, char letra, char *categoria_selecionad
     }
 }
 
-
 void computar_resposta(Player *player, int* ordemJogador, char **vet_respostas, int nJogadores, int n_rodadas) { // BRUNA
     int cont = 0;
     double div;
@@ -102,6 +109,9 @@ void computar_resposta(Player *player, int* ordemJogador, char **vet_respostas, 
     }
 }
 
+/* A função abaixo traz uma cópia da cadeia de caracter convertida em 
+   minúsculo, pois será necessário na comparação de respostas iguais visto que
+   a linguagem C é case sensitive. */
 void tratar_respostas(char *resposta){ // BRUNA
     int i = 0;
 
@@ -110,6 +120,8 @@ void tratar_respostas(char *resposta){ // BRUNA
     }
 }
 
+/* Na função abaixo é selecionado apenas o primeiro nome caso o jogador 
+   digite um nome composto na categoria "nomes de pessoas". */
 void primeiro_nome(char *resposta){ // BRUNA
   char* parte = strtok(resposta," ");
 }
