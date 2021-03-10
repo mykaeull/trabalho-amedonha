@@ -8,27 +8,27 @@
 
 // verifica se a quantidade de jogadores está entre 2 e 10; Caso não: um loop é ativado e só
 // para quando a quantidade estiver correta / Caso sim: retorna a quantidade agora correta 
-int verificar_qtd_players(int n) { // Myka
+int verificar_qtd_players(int nJogadores) { // Myka
     char converter[256];
-    while (n < 2 || n > 10) {
+    while (nJogadores < 2 || nJogadores > 10) {
         printf("------------------------------------------------------\n");
         printf("Erro: Quantidade invalida\n");
         printf("Entre com um valor entre 2 e 10\n");
         printf("------------------------------------------------------\n");
         printf("entre a quantidade de jogadores: ");
         fgets(converter, 256, stdin);
-        n = atoi(converter);
+        nJogadores = atoi(converter);
     }
-    return n;
+    return nJogadores;
 }
 
 // cria dinamicamente os jogadores que possuem uma estrutura do tipo Player;
 // após serem criados, um loop que vai de 0 até a quantidade de players - 1
 // é ativado para tirar o lixo contido na criação do ponto final na struct Player
 // e colocar ponto_final = 0 para futuros cálculos; ao final, retorna um array de players
-Player* criar_players(int n) { // Myka
-    Player *player = (Player*)malloc(n*sizeof(Player));
-    for (int i = 0; i < n; i++) {
+Player* criar_players(int nJogadores) { // Myka
+    Player *player = (Player*)malloc(nJogadores*sizeof(Player));
+    for (int i = 0; i < nJogadores; i++) {
       player[i].ponto_final = 0; 
     }
     return player;
@@ -38,8 +38,8 @@ Player* criar_players(int n) { // Myka
 // para fazer a limpeza de lixo na string "player.nome"; em seguida, é verificado se a posição
 // 12 da string "player.nome" possui um caractere e enquanto possuir, é solicitado que o jogador
 // entre com um nome com até 12 caracteres 
-void verificar_nome(Player *player, int n) { // Myka
-    for (int i = 0; i < n; i++) {
+void verificar_nome(Player *player, int nJogadores) { // Myka
+    for (int i = 0; i < nJogadores; i++) {
         memset(player[i].nome, 0, sizeof(player[i].nome));
         printf("nome jogador %d: ", i+1);
         fgets(player[i].nome, 256, stdin);

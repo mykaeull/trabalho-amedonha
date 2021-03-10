@@ -16,7 +16,7 @@ void play_game() {
     int categoria_sorteada[5];
     char *categoria_selecionada;
     char converter[256];
-    int n;
+    int nJogadores;
     int *vetor_de_sorteados;
     int *vetor_ordem;
     char *categorias_jogadas[5];
@@ -30,15 +30,15 @@ void play_game() {
 
     printf("entre a quantidade de jogadores: ");
     fgets(converter, 256, stdin);
-    n = atoi(converter);
-    n = verificar_qtd_players(n);
+    nJogadores = atoi(converter);
+    nJogadores = verificar_qtd_players(nJogadores);
     
-    vetor_de_sorteados = malloc(n * sizeof(int));
-    vetor_ordem = malloc(n * sizeof(int));
+    vetor_de_sorteados = malloc(nJogadores * sizeof(int));
+    vetor_ordem = malloc(nJogadores * sizeof(int));
 
-    player = criar_players(n);
+    player = criar_players(nJogadores);
 
-    verificar_nome(player, n);
+    verificar_nome(player, nJogadores);
 
     preencher_alfabeto(alfabeto);
     preencher_categoria(categoria);
@@ -60,23 +60,23 @@ void play_game() {
         printf("categoria sorteada: %s\n", categoria_selecionada);
         printf("------------------------------------------------------\n");
 
-        memset(vetor_de_sorteados, -1, n * sizeof(int));
-        gerar_ordem_aleatoria(vetor_de_sorteados, vetor_ordem, n); 
+        memset(vetor_de_sorteados, -1, nJogadores * sizeof(int));
+        gerar_ordem_aleatoria(vetor_de_sorteados, vetor_ordem, nJogadores); 
 
         printf("------------------------------------------------------\n");
         printf("A ordem desta rodada sera: \n");
-        mostrar_ordem(player, vetor_ordem, n);
+        mostrar_ordem(player, vetor_ordem, nJogadores);
         printf("------------------------------------------------------\n");
 
         printf("Tecle [ENTER] para iniciar a rodada\n");
         getchar();
         system("clear");
 
-        respostas(player, vetor_ordem, letra, categoria_selecionada, n, vet_respostas);
+        respostas(player, vetor_ordem, letra, categoria_selecionada, nJogadores, vet_respostas);
         printf("\n");
-        computar_resposta(player, vetor_ordem, vet_respostas, n, i);
+        computar_resposta(player, vetor_ordem, vet_respostas, nJogadores, i);
         
-        mostrar_pontos(player, vetor_ordem,categorias_jogadas, n, i);
+        mostrar_pontos(player, vetor_ordem,categorias_jogadas, nJogadores, i);
 
         if(i == 4){
             gerar_vencedor(player,i);

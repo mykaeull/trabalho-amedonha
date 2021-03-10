@@ -34,16 +34,16 @@ int verificar_respostas(char *resposta, char letra,char *categoria_selecionada){
 /* A função "respostas" utiliza de um "for" para passar pela quantidade de jogadores 
    solicitando a resposta deles, assim ela armazena a resposta digitada pelo jogador com o 
    auxílio do "fgets". Além de contar o tempo que o jogador tem para realizar sua jogada. */
-void respostas(Player *player, int *vet2, char letra, char *categoria_selecionada, int n, char **vet_respostas) { // BRUNA
+void respostas(Player *player, int *vet2, char letra, char *categoria_selecionada, int nJogadores, char **vet_respostas) { // BRUNA
     char resultado;
     int mostrar_mensagem = 1;
     struct timeval  inicio, fim;
     double tempo_total;
 
-    for (int k = 0; k < n;) {
+    for (int k = 0; k < nJogadores;) {
         gettimeofday(&inicio, NULL);
         if (mostrar_mensagem) {
-            printf("%s, voce deve entrar um '%s' com a letra '%c' em %d segundos\n", player[vet2[k]].nome, categoria_selecionada, letra, ((8 + (2*n)) - (2*k)));
+            printf("%s, voce deve entrar um '%s' com a letra '%c' em %d segundos\n", player[vet2[k]].nome, categoria_selecionada, letra, ((8 + (2*nJogadores)) - (2*k)));
         }
         mostrar_mensagem = 1;
         fgets(player[vet2[k]].resposta, 256, stdin);
@@ -54,7 +54,7 @@ void respostas(Player *player, int *vet2, char letra, char *categoria_selecionad
             gettimeofday(&fim, NULL);
             tempo_total = (double) (fim.tv_usec - inicio.tv_usec) / 1000000 + (double) (fim.tv_sec - inicio.tv_sec);
             player[vet2[k]].tempo_total += tempo_total;
-            if (tempo_total <= (double)((8 + (2*n) - (2*k)))) {
+            if (tempo_total <= (double)((8 + (2*nJogadores) - (2*k)))) {
               vet_respostas[vet2[k]] = player[vet2[k]].resposta;
               k++;
             } else {

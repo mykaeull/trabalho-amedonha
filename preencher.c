@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "funcoes.h"
 
+/* a função "preencher_alfabeto" deve receber como parametro um ponteiro de ponteiro tipo char , e deve armazenar todas as letras do alfabeto no ponteiro do parametro, pois sera utilizada para puxar novos letras a cada partida"*/
 void preencher_alfabeto(char *alfabeto) { // Carlos
   alfabeto[0] = 'a';
   alfabeto[1] = 'b';
@@ -32,6 +33,7 @@ void preencher_alfabeto(char *alfabeto) { // Carlos
   alfabeto[22] = 'z';
 }
 
+/* a função preencher catergoria deve receber como parametro um ponteiro de um ponteiro tipo char, e armazenar todas as categorias do jogo ne ponteiro , para que possam ser chamadas a cada rodada*/
 void preencher_categoria(char **categoria) { // Carlos
     categoria[0] = "profissoes";
     categoria[1] = "nomes de pessoas";

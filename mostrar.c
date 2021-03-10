@@ -6,12 +6,14 @@
 #include <stdlib.h>
 #include "funcoes.h"
 
-void mostrar_ordem(Player *player, int *vet2, int n) { // Carlos
-    for (int i = 0; i < n; i++) {
+/* a função "mostrar_ordem" recebe o vetor do tipo struct do jogador, o vetor com a ordem dos jogadores dessa rodada e o numero de jogadores, com isso ele deve mostrar a aos jogadores a nova ordem em que deve ser jogada em cada rodada*/
+void mostrar_ordem(Player *player, int *vet2, int nJogadores) { // Carlos
+    for (int i = 0; i < nJogadores; i++) {
         printf("%d. %s\n", i+1, player[vet2[i]].nome);
     }
 }
 
+/* a função "mostrar_pontos" recebe como paramentro o vetor do tipo struct do jogador, um vetor com a ordem dos jogadores que jogou na ultima rodada, o nome da categoria, o numero de jogadores e o numero da rodada, ela é responsável por mostrar a cada rodada o nome do jogador seguido pela resposta digitada, apos ele mostra a cada rodada o nome do jogador com a pontuação por rodada, e se caso for a ultima rodada ele mostra a pontuação final, caso não mostra a pontuação partial */
 void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,int nJogadores,int rodada ){ // Carlos
     printf("------------------------------------------------------\n");
     printf("Jogadas Realizadas\n");
@@ -50,6 +52,7 @@ void mostrar_pontos(Player* player,int* ordemJogador, char** categorias_jogadas,
     system("clear");
 }
 
+/*A função "gerar_vencedor, recebe como parametro o vetor do tipo struct de jogadores e a quantidade de jogadores, ela é responsável por verificar se existe mais de um jogador com o a mesma pontuação, caso sim deve buscar o que fez a jogadas com menor tempo como criterio de desempate, caso não apenas mostra quem foi o vencedor do jogo "*/
 void gerar_vencedor(Player* player,int nJogadores){ // Carlos
   int maior_ponto = 0;
   for(int i = 0; i < nJogadores; i++){

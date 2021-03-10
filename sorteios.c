@@ -27,11 +27,11 @@ int verificar_sorteado(int *vetor_de_sorteados, int indice) { // Myka
 
 // gera um índice aleatório sem repetir a cada vez que é chamadae o retorna; utiliza as funções
 // sortear_numero e verificar_sorteado para tal
-int gerar_indice(int *vetor_de_sorteados, int n) { // Myka
-    int indice = sortear_numero(n);
+int gerar_indice(int *vetor_de_sorteados, int nJogadores) { // Myka
+    int indice = sortear_numero(nJogadores);
 
     while(verificar_sorteado(vetor_de_sorteados, indice)) {
-        indice = sortear_numero(n);
+        indice = sortear_numero(nJogadores);
     }
 
     return indice;
@@ -41,12 +41,12 @@ int gerar_indice(int *vetor_de_sorteados, int n) { // Myka
 // um número aleatório de range n) e verificar_sorteado (retorna um índice não repetido);
 // recebe como parâmetro um vetor_ordem onde cada posição em ordem crescente vai conter os 
 // índices que foram gerados de forma aleatória; exemplo: vetor_ordem[0] = 3, vetor[1] = 0, ...
-void gerar_ordem_aleatoria(int *vetor_de_sorteados, int *vetor_ordem, int n) { // Myka
-    int indice = sortear_numero(n);
+void gerar_ordem_aleatoria(int *vetor_de_sorteados, int *vetor_ordem, int nJogadores) { // Myka
+    int indice = sortear_numero(nJogadores);
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < nJogadores; i++) {
         while (verificar_sorteado(vetor_de_sorteados, indice)) {
-            indice = sortear_numero(n);
+            indice = sortear_numero(nJogadores);
         }
         vetor_ordem[i] = vetor_de_sorteados[indice];
     }
